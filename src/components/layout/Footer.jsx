@@ -1,12 +1,16 @@
 // src/components/layout/Footer.jsx
+
+// React 라이브러리와 Link 컴포넌트를 가져옵니다.
 import React from 'react';
 import { Link } from 'react-router-dom';
+// 이 컴포넌트 전용 CSS 모듈을 가져옵니다.
 import styles from './Footer.module.css';
 
+// 소셜 미디어 링크 데이터를 배열로 정의합니다. 아이콘은 SVG로 직접 작성되었습니다.
 const socialLinksData = [
   {
     name: 'Facebook',
-    href: 'https://www.instagram.com/ohsh2',
+    href: 'https://www.instagram.com/ohsh2', // 실제 페이스북 주소로 변경해야 합니다.
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
@@ -22,53 +26,48 @@ const socialLinksData = [
       </svg>
     ),
   },
-  {
-    name: 'YouTube',
-    href: 'https://www.instagram.com/ohsh2',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'Threads',
-    href: 'https://www.instagram.com/ohsh2',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/>
-      </svg>
-    ),
-  },
+  // 다른 소셜 링크들도 유사하게 추가... 
 ];
 
+/**
+ * Footer 컴포넌트
+ * 
+ * 웹사이트의 가장 하단에 위치하는 푸터(꼬리말) 영역입니다.
+ * 사이트맵, 회사 정보, 약관, 소셜 미디어 링크 등 부가적인 정보들을 포함합니다.
+ */
 const Footer = () => {
   return (
+    // `<footer>` 태그는 시맨틱 웹을 위해 푸터 영역임을 명시적으로 나타냅니다.
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.footerContent}>
+          {/* 푸터의 각 섹션들 */}
+          
+          {/* 로고 및 설명 섹션 */}
           <div className={styles.footerSection}>
             <h3 className={styles.footerTitle}>삐삐 PetPotal</h3>
             <p className={styles.footerDescription}>
               반려동물과 함께하는 모든 소중한 순간을<br />
               더욱 특별하게 만들어드립니다.
             </p>
+            {/* 소셜 미디어 링크 목록 */}
             <div className={styles.socialLinks}>
               {socialLinksData.map((link, index) => (
                 <a 
-                  key={index} 
-                  href={link.href} 
-                  className={styles.socialLink} 
-                  aria-label={link.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={index} // 각 링크를 식별하기 위한 고유 key
+                  href={link.href} // 이동할 URL
+                  className={styles.socialLink}
+                  aria-label={link.name} // 스크린 리더를 위한 링크 설명
+                  target="_blank" // 링크를 새 탭에서 열도록 설정
+                  rel="noopener noreferrer" // 보안 및 성능상의 이유로 추가
                 >
-                  {link.icon}
+                  {link.icon} {/* SVG 아이콘 */}
                 </a>
               ))}
             </div>
           </div>
 
+          {/* 서비스 바로가기 섹션 */}
           <div className={styles.footerSection}>
             <h4 className={styles.sectionTitle}>서비스</h4>
             <ul className={styles.footerLinks}>
@@ -81,6 +80,7 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* 정보 바로가기 섹션 */}
           <div className={styles.footerSection}>
             <h4 className={styles.sectionTitle}>정보</h4>
             <ul className={styles.footerLinks}>
@@ -92,6 +92,7 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* 약관 및 정책 섹션 */}
           <div className={styles.footerSection}>
             <h4 className={styles.sectionTitle}>약관 및 정책</h4>
             <ul className={styles.footerLinks}>
@@ -102,19 +103,21 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* 고객센터 정보 섹션 */}
           <div className={styles.footerSection}>
             <h4 className={styles.sectionTitle}>고객센터</h4>
             <div className={styles.contactInfo}>
               <p className={styles.phone}>📞 1588-1234</p>
               <p className={styles.email}>📧 help@petpotal.com</p>
               <p className={styles.hours}>
-                평일 09:00 - 09:00:01<br />
-                (평일, 주말, 공휴일 휴무)
+                평일 09:00 - 18:00<br />
+                (주말, 공휴일 휴무)
               </p>
             </div>
           </div>
         </div>
 
+        {/* 푸터 하단 영역 (회사 정보 및 저작권) */}
         <div className={styles.footerBottom}>
           <div className={styles.companyInfo}>
             <p>
@@ -131,4 +134,5 @@ const Footer = () => {
   );
 };
 
+// Footer 컴포넌트를 다른 파일에서 재사용할 수 있도록 내보냅니다.
 export default Footer;

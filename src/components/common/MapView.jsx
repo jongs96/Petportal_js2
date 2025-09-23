@@ -7,20 +7,43 @@ const MapView = ({ userLocation, markers }) => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerInstances = useRef([]);
-  const userMarkerRef = useRef(null); // Ref for user location marker
-  const [kakaoMaps, setKakaoMaps] = useState(window.kakao?.maps || null);
+  const userMarkerRef = useRef(null);
+  const [kakaoMaps, setKakaoMaps] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Assume loaded if window.kakao.maps is available
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 1) 카카오맵 SDK 로드 및 초기화
+  useEffect(() => {
+    if (window.kakao && window.kakao.maps) {
+      // 스크립트가 이미 로드된 경우
+      window.kakao.maps.load(() => {
+        setKakaoMaps(window.kakao.maps);
+        setIsLoading(false);
+      });
+    } else {
+      // 스크립트가 아직 로드되지 않은 경우
+      const script = document.createElement('script');
+      script.onload = () => {
+        window.kakao.maps.load(() => {
+          setKakaoMaps(window.kakao.maps);
+          setIsLoading(false);
+        });
+      };
+      script.onerror = () => {
+        setError('카카오맵 스크립트를 불러오지 못했습니다. API 키 또는 도메인 설정을 확인해주세요.');
+        setIsLoading(false);
+      };
+      // index.html의 스크립트 태그가 제거되었을 경우를 대비한 안전장치
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${'9da552959cfd8520174d1bc0c5a1d060'}&libraries=services,clusterer,drawing&autoload=false`;
+      document.head.appendChild(script);
+    }
+  }, []);
 
   // 2) 지도 생성
   useEffect(() => {
-    if (!kakaoMaps || !mapRef.current) return;
+    if (!kakaoMaps || !mapRef.current || isLoading) return;
 
     try {
-      if (typeof kakaoMaps.LatLng !== 'function') {
-        throw new Error('LatLng 생성자를 찾을 수 없습니다.');
-      }
-
       const center = userLocation
         ? new kakaoMaps.LatLng(userLocation.lat, userLocation.lng)
         : new kakaoMaps.LatLng(37.5665, 126.9780);
@@ -30,65 +53,57 @@ const MapView = ({ userLocation, markers }) => {
         level: 5,
       });
 
-      // 줌 컨트롤 추가
       const zoomControl = new kakaoMaps.ZoomControl();
       mapInstance.current.addControl(zoomControl, kakaoMaps.ControlPosition.RIGHT);
     } catch (err) {
       console.error('지도 생성 실패:', err);
       setError(`지도 생성에 실패했습니다: ${err.message}`);
     }
-  }, [kakaoMaps, userLocation]);
+  }, [kakaoMaps, userLocation, isLoading]);
 
-  // 3) 사용자 위치 업데이트
+  // 3) 사용자 위치 업데이트 (지도 중심 이동)
   useEffect(() => {
-    if (!mapInstance.current || !userLocation || !kakaoMaps || isLoading) return;
+    if (!mapInstance.current || !userLocation || !kakaoMaps) return;
     try {
       const center = new kakaoMaps.LatLng(userLocation.lat, userLocation.lng);
       mapInstance.current.panTo(center);
     } catch (err) {
       console.error('위치 이동 실패:', err);
     }
-  }, [userLocation, kakaoMaps, isLoading]);
+  }, [userLocation, kakaoMaps]);
 
-  // 5) 사용자 위치 마커 렌더링
+  // 4) 사용자 위치 마커 렌더링
   useEffect(() => {
     if (!mapInstance.current || !userLocation || !kakaoMaps) return;
 
-    // 기존 사용자 마커 제거
     if (userMarkerRef.current) {
       userMarkerRef.current.setMap(null);
     }
 
     try {
       const userPosition = new kakaoMaps.LatLng(userLocation.lat, userLocation.lng);
-      
-      // 빨간색 점 마커 이미지 생성 (SVG 데이터 URI 사용)
       const redDotImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FF0000" stroke="#FFFFFF" stroke-width="2"/></svg>');
       const imageSize = new kakaoMaps.Size(24, 24);
       const imageOption = { offset: new kakaoMaps.Point(12, 12) };
       const markerImage = new kakaoMaps.MarkerImage(redDotImageSrc, imageSize, imageOption);
 
-      // 사용자 위치 마커 생성
-      const marker = new kakaoMaps.Marker({ 
+      const marker = new kakaoMaps.Marker({
         position: userPosition,
         title: '내위치',
-        image: markerImage // 커스텀 아이콘 적용
+        image: markerImage
       });
 
       marker.setMap(mapInstance.current);
-      userMarkerRef.current = marker; // 새 마커를 ref에 저장
-
+      userMarkerRef.current = marker;
     } catch (err) {
       console.error('사용자 위치 마커 생성 실패:', err);
     }
+  }, [userLocation, kakaoMaps]);
 
-  }, [mapInstance.current, userLocation, kakaoMaps]);
-
-  // 4) 마커 렌더링
+  // 5) 업체 마커 렌더링
   useEffect(() => {
-    if (!mapInstance.current || !markers || !kakaoMaps || isLoading) return;
+    if (!mapInstance.current || !markers || !kakaoMaps) return;
 
-    // 기존 마커 제거
     markerInstances.current.forEach(marker => marker.setMap(null));
     markerInstances.current = [];
 
@@ -102,7 +117,6 @@ const MapView = ({ userLocation, markers }) => {
         const marker = new kakaoMaps.Marker({ position, title: data.title });
         marker.setMap(mapInstance.current);
 
-        // 커스텀 아이콘
         if (data.icon) {
           const image = new kakaoMaps.MarkerImage(
             data.icon,
@@ -112,12 +126,10 @@ const MapView = ({ userLocation, markers }) => {
           marker.setImage(image);
         }
 
-        // 클릭 이벤트
         if (data.onClick) {
           kakaoMaps.event.addListener(marker, 'click', () => data.onClick(data));
         }
 
-        // 정보창
         if (data.info) {
           const infoWindow = new kakaoMaps.InfoWindow({
             content: `<div style="padding:10px;font-size:12px;">${data.info}</div>`,
@@ -133,7 +145,7 @@ const MapView = ({ userLocation, markers }) => {
         console.error(`마커 ${idx} 생성 실패:`, err);
       }
     });
-  }, [markers, kakaoMaps, isLoading]);
+  }, [markers, kakaoMaps]);
 
   // 로딩 상태
   if (isLoading) {
