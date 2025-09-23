@@ -1,0 +1,119 @@
+[
+  {
+    "id": "g1",
+    "name": "멍멍 미용실",
+    "address": "서울시 강남구 테헤란로 123",
+    "phone": "02-1234-5678",
+    "operatingHours": "매일 10:00 - 20:00",
+    "imageUrl": "/src/assets/image/grooming1.jpg",
+    "description": "최고의 미용 기술로 우리 아이를 더욱 빛나게 해드립니다."
+  },
+  {
+    "id": "g2",
+    "name": "냥냥 뷰티샵",
+    "address": "서울시 서초구 서초대로 456",
+    "phone": "02-9876-5432",
+    "operatingHours": "평일 09:00 - 19:00, 주말 휴무",
+    "imageUrl": "/src/assets/image/grooming2.jpg",
+    "description": "고양이 전문 미용실, 스트레스 없이 편안하게 미용 받으세요."
+  },
+  {
+    "id": "g3",
+    "name": "펫 스타일",
+    "address": "서울시 송파구 올림픽로 789",
+    "phone": "02-5678-1234",
+    "operatingHours": "매일 11:00 - 21:00",
+    "imageUrl": "/src/assets/image/grooming3.jpg",
+    "description": "다양한 스타일과 맞춤형 케어로 반려동물의 아름다움을 찾아드립니다."
+  },
+  {
+    "id": "g4",
+    "name": "도그 그루밍",
+    "address": "서울시 강동구 천호대로 1004",
+    "phone": "02-1111-2222",
+    "operatingHours": "매일 09:00 - 18:00",
+    "imageUrl": "/src/assets/image/grooming4.jpg",
+    "description": "강아지 전문 미용, 청결하고 안전한 환경을 제공합니다."
+  },
+  {
+    "id": "g5",
+    "name": "캣츠 미용실",
+    "address": "서울시 마포구 월드컵로 500",
+    "phone": "02-3333-4444",
+    "operatingHours": "평일 10:00 - 19:00",
+    "imageUrl": "/src/assets/image/grooming5.jpg",
+    "description": "고양이만을 위한 특별한 미용 서비스, 예약 필수."
+  },
+  {
+    "id": "g6",
+    "name": "해피 펫 살롱",
+    "address": "서울시 영등포구 여의대방로 200",
+    "phone": "02-5555-6666",
+    "operatingHours": "매일 10:30 - 20:30",
+    "imageUrl": "/src/assets/image/grooming6.jpg",
+    "description": "반려동물의 행복을 최우선으로 생각하는 프리미엄 살롱."
+  },
+  {
+    "id": "g7",
+    "name": "프렌즈 그루밍",
+    "address": "서울시 관악구 신림로 700",
+    "phone": "02-7777-8888",
+    "operatingHours": "주말 11:00 - 17:00, 평일 휴무",
+    "imageUrl": "/src/assets/image/grooming7.jpg",
+    "description": "친구처럼 편안하게 미용 받을 수 있는 공간."
+  },
+  {
+    "id": "g8",
+    "name": "스타 펫 미용",
+    "address": "서울시 동작구 상도로 300",
+    "phone": "02-9999-0000",
+    "operatingHours": "매일 09:30 - 19:30",
+    "imageUrl": "/src/assets/image/grooming8.jpg",
+    "description": "우리 아이를 스타로 만들어 줄 특별한 미용."
+  },
+  {
+    "id": "g9",
+    "name": "러블리 펫 케어",
+    "address": "서울시 강서구 화곡로 400",
+    "phone": "02-1212-3434",
+    "operatingHours": "평일 10:00 - 18:00",
+    "imageUrl": "/src/assets/image/grooming9.jpg",
+    "description": "사랑스러운 반려동물을 위한 섬세한 케어."
+  },
+  {
+    "id": "g10",
+    "name": "퍼피 살롱",
+    "address": "서울시 구로구 디지털로 600",
+    "phone": "02-5656-7878",
+    "operatingHours": "매일 11:00 - 20:00",
+    "imageUrl": "/src/assets/image/grooming10.jpg",
+    "description": "어린 강아지들을 위한 맞춤형 미용 서비스."
+  },
+  {
+    "id": "g11",
+    "name": "올데이 그루밍",
+    "address": "서울시 금천구 가산디지털1로 100",
+    "phone": "02-2323-4545",
+    "operatingHours": "매일 09:00 - 21:00",
+    "imageUrl": "/src/assets/image/grooming11.jpg",
+    "description": "하루 종일 언제든 이용 가능한 편리한 미용실."
+  },
+  {
+    "id": "g12",
+    "name": "힐링 펫 스파",
+    "address": "서울시 양천구 목동동로 300",
+    "phone": "02-6767-8989",
+    "operatingHours": "평일 10:00 - 19:00",
+    "imageUrl": "/src/assets/image/grooming12.jpg",
+    "description": "미용과 스파를 동시에, 반려동물의 힐링 공간."
+  },
+  {
+    "id": "g13",
+    "name": "프리미엄 펫 미용",
+    "address": "서울시 서대문구 연세로 200",
+    "phone": "02-1010-2020",
+    "operatingHours": "매일 10:00 - 20:00",
+    "imageUrl": "/src/assets/image/grooming13.jpg",
+    "description": "최고급 제품과 서비스로 반려동물을 케어합니다."
+  }
+]

@@ -1,0 +1,162 @@
+
+/* src/components/sections/BestProductsSection.module.css */
+.section {
+  padding: var(--section-padding) 0;
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.viewMore {
+  font-size: 1rem;
+  color: var(--text-light-color);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.viewMore:hover {
+  color: var(--primary-color);
+}
+
+.grid {
+  display: grid;
+  
+  border-radius: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 250px;
+  position: relative;
+}
+
+.bestBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4757;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardBody {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.productName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.productDescription {
+  font-size: 0.9rem;
+  color: var(--text-light-color);
+  margin-bottom: 15px;
+  height: 40px; /* Set a fixed height */
+}
+
+.productInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.productPrice {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stars {
+  font-size: 0.9rem;
+}
+
+.ratingText {
+  font-size: 0.9rem;
+  color: var(--text-light-color);
+}
+
+.brand {
+  font-size: 0.8rem;
+  color: var(--text-light-color);
+  margin: 0;
+  font-style: italic;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-light-color);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 1.8rem;
+  }
+}

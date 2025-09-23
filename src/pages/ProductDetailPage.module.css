@@ -1,0 +1,148 @@
+.detailLayout {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.imageColumn img {
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #999999;
+}
+
+.infoColumn h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 8px 0 16px 0;
+}
+
+.ratingInfo {
+  display: flex;
+  gap: 8px;
+  color: #666666;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 24px;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.quantitySelector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: auto; /* 수량 선택을 하단으로 밀어냄 */
+  margin-bottom: 16px;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  font-size: 1.2rem;
+}
+
+.totalPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.totalPrice span {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.totalPrice p {
+  font-size: 2rem;
+  color: #a7c7e7;
+  margin: 0;
+}
+
+.actionButtons {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+}
+.actionButtons button {
+  width: 100%;
+}
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  margin-top: 48px;
+}
+.tabs button {
+  padding: 16px 24px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #999999;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px; /* 아래 테두리와 겹치도록 */
+  transition: all 0.2s;
+}
+.tabs button.active {
+  color: #a7c7e7;
+  font-weight: 700;
+  border-bottom-color: #a7c7e7;
+}
+
+/* --- 탭 컨텐츠 스타일 --- */
+.tabContent {
+  padding: 48px 0;
+  line-height: 1.8;
+}
+.tabContent h3 {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+}
+
+/* --- 리뷰 스타일 --- */
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.reviewItem {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 24px;
+}
+.reviewRating {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.reviewContent {
+  margin-bottom: 8px;
+}
+.reviewAuthor {
+  font-size: 0.875rem;
+  color: #999999;
+  text-align: right;
+}

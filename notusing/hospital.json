@@ -1,0 +1,165 @@
+[
+  {
+    "id": "h1",
+    "name": "24시 멍냥 동물병원",
+    "address": "서울시 강남구 테헤란로 123",
+    "phone": "02-1111-2222",
+    "operatingHours": "24시간 연중무휴",
+    "emergency": true,
+    "specialties": [
+      "내과",
+      "외과",
+      "응급의학과"
+    ],
+    "rating": 4.7,
+    "reviews": 250,
+    "imageUrl": "https://picsum.photos/seed/hospital1/800/600",
+    "description": "언제든 안심하고 방문할 수 있는 24시 동물병원입니다. 최신 장비와 숙련된 의료진이 함께합니다."
+  },
+  {
+    "id": "h2",
+    "name": "우리동네 펫 클리닉",
+    "address": "서울시 서초구 서초대로 456",
+    "phone": "02-3333-4444",
+    "operatingHours": "평일 09:00 - 19:00, 토요일 09:00 - 13:00",
+    "emergency": false,
+    "specialties": [
+      "예방접종",
+      "건강검진",
+      "피부과"
+    ],
+    "rating": 4.5,
+    "reviews": 180,
+    "imageUrl": "https://picsum.photos/seed/hospital2/800/600",
+    "description": "반려동물의 건강을 위한 정기적인 검진과 예방접종을 전문으로 합니다. 친절한 상담을 약속드립니다."
+  },
+  {
+    "id": "h3",
+    "name": "행복한 동물 메디컬 센터",
+    "address": "서울시 송파구 올림픽로 789",
+    "phone": "02-5555-6666",
+    "operatingHours": "평일 10:00 - 20:00, 일요일 휴무",
+    "emergency": false,
+    "specialties": [
+      "치과",
+      "안과",
+      "영양상담"
+    ],
+    "rating": 4.8,
+    "reviews": 300,
+    "imageUrl": "https://picsum.photos/seed/hospital3/800/600",
+    "description": "반려동물의 삶의 질 향상을 위한 전문적인 치과, 안과 진료 및 영양 상담을 제공합니다."
+  },
+  {
+    "id": "h4",
+    "name": "사랑 동물병원",
+    "address": "서울시 강동구 천호대로 1004",
+    "phone": "02-7777-8888",
+    "operatingHours": "평일 09:30 - 18:30",
+    "emergency": false,
+    "specialties": [
+      "내과",
+      "건강검진"
+    ],
+    "rating": 4.6,
+    "reviews": 120,
+    "imageUrl": "https://picsum.photos/seed/hospital4/800/600",
+    "description": "따뜻한 마음으로 반려동물을 진료하는 사랑 동물병원입니다. 정기적인 건강 관리에 힘쓰고 있습니다."
+  },
+  {
+    "id": "h5",
+    "name": "믿음직한 펫 병원",
+    "address": "서울시 마포구 월드컵로 500",
+    "phone": "02-9999-0000",
+    "operatingHours": "평일 10:00 - 19:00",
+    "emergency": false,
+    "specialties": [
+      "외과",
+      "정형외과"
+    ],
+    "rating": 4.9,
+    "reviews": 210,
+    "imageUrl": "https://picsum.photos/seed/hospital5/800/600",
+    "description": "정확한 진단과 섬세한 수술로 반려동물의 건강을 되찾아 드립니다. 믿고 맡길 수 있는 병원입니다."
+  },
+  {
+    "id": "h6",
+    "name": "행복가득 동물병원",
+    "address": "서울시 영등포구 여의대방로 200",
+    "phone": "02-1234-0000",
+    "operatingHours": "평일 09:00 - 18:00",
+    "emergency": false,
+    "specialties": [
+      "내과",
+      "피부과"
+    ],
+    "rating": 4.4,
+    "reviews": 90,
+    "imageUrl": "https://picsum.photos/seed/hospital6/800/600",
+    "description": "반려동물과 보호자 모두가 행복할 수 있도록 최선을 다하는 병원입니다."
+  },
+  {
+    "id": "h7",
+    "name": "굿닥터 펫 클리닉",
+    "address": "서울시 관악구 신림로 700",
+    "phone": "02-2345-1111",
+    "operatingHours": "평일 10:00 - 20:00",
+    "emergency": false,
+    "specialties": [
+      "예방접종",
+      "건강검진"
+    ],
+    "rating": 4.7,
+    "reviews": 150,
+    "imageUrl": "https://picsum.photos/seed/hospital7/800/600",
+    "description": "꼼꼼한 진료와 친절한 설명으로 보호자들의 만족도가 높은 병원입니다."
+  },
+  {
+    "id": "h8",
+    "name": "베스트 동물 메디컬",
+    "address": "서울시 동작구 상도로 300",
+    "phone": "02-4567-2222",
+    "operatingHours": "평일 09:30 - 19:30",
+    "emergency": false,
+    "specialties": [
+      "외과",
+      "영상진단"
+    ],
+    "rating": 4.8,
+    "reviews": 200,
+    "imageUrl": "https://picsum.photos/seed/hospital8/800/600",
+    "description": "최첨단 영상 진단 장비를 갖추고 정확한 진료를 제공합니다."
+  },
+  {
+    "id": "h9",
+    "name": "친절한 펫 병원",
+    "address": "서울시 강서구 화곡로 400",
+    "phone": "02-6789-3333",
+    "operatingHours": "평일 10:00 - 18:00",
+    "emergency": false,
+    "specialties": [
+      "내과",
+      "치과"
+    ],
+    "rating": 4.5,
+    "reviews": 110,
+    "imageUrl": "https://picsum.photos/seed/hospital9/800/600",
+    "description": "반려동물의 구강 건강을 책임지는 전문 치과 진료를 받을 수 있습니다."
+  },
+  {
+    "id": "h10",
+    "name": "튼튼 동물병원",
+    "address": "서울시 구로구 디지털로 600",
+    "phone": "02-8901-4444",
+    "operatingHours": "평일 11:00 - 20:00",
+    "emergency": false,
+    "specialties": [
+      "정형외과",
+      "재활의학과"
+    ],
+    "rating": 4.6,
+    "reviews": 130,
+    "imageUrl": "https://picsum.photos/seed/hospital10/800/600",
+    "description": "반려동물의 관절 및 뼈 건강을 위한 전문적인 정형외과 및 재활 치료를 제공합니다."
+  }
+]
