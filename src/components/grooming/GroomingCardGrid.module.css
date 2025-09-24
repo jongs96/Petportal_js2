@@ -13,6 +13,12 @@
   margin-top: 24px;
 }
 
+.cardLink {
+  text-decoration: none; /* 링크의 밑줄 제거 */
+  color: inherit; /* 부모 요소의 글자 색상 상속 */
+  display: block; /* 링크를 블록 요소로 만들어 영역 전체를 차지하게 함 */
+}
+
 .card {
   background: white;
   border-radius: 12px;
@@ -20,6 +26,7 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border: 1px solid #e5e7eb;
+  height: 100%; /* Make card fill the link wrapper */
 }
 
 .card:hover {
@@ -124,41 +131,6 @@
   font-size: 16px;
 }
 
-.cardActions {
-  display: flex;
-  gap: 8px;
-}
-
-.detailButton,
-.bookingButton {
-  flex: 1;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.detailButton {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.detailButton:hover {
-  background: #e5e7eb;
-}
-
-.bookingButton {
-  background: #3b82f6;
-  color: white;
-}
-
-.bookingButton:hover {
-  background: #2563eb;
-}
-
 .emptyState {
   text-align: center;
   padding: 80px 20px;
@@ -207,16 +179,6 @@
 
   .name {
     font-size: 16px;
-  }
-
-  .cardActions {
-    flex-direction: column;
-  }
-
-  .detailButton,
-  .bookingButton {
-    width: 100%;
-    padding: 12px;
   }
 
   .emptyState {

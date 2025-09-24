@@ -14,12 +14,8 @@ import styles from './GroomingPage.module.css'; // 미용 페이지 전용 스�
 // 유틸리티 함수를 가져옵니다.
 import { getDistance } from '../utils/locationUtils'; // 거리 계산 유틸리티 (현재는 미사용)
 
-// 임시 목(mock) 데이터입니다. 실제로는 API를 통해 서버에서 받아와야 합니다.
-const mockGroomingServices = [
-  { id: 1, name: '스타일 펫 미용', address: '서울 강남구', lat: 37.5000, lng: 127.0365, services: ['목욕', '부분미용'], targetAnimals: ['강아지'], rating: 4.8, imageUrl: 'https://picsum.photos/seed/grooming1/400/300' },
-  { id: 2, name: '해피 펫 그루밍', address: '경기 성남시', lat: 37.4500, lng: 127.1300, services: ['전체미용', '스파'], targetAnimals: ['고양이'], rating: 4.9, imageUrl: 'https://picsum.photos/seed/grooming2/400/300' },
-  { id: 3, name: '프리미엄 펫 살롱', address: '부산 해운대구', lat: 35.1600, lng: 129.1600, services: ['스타일링', '마사지'], targetAnimals: ['강아지', '고양이'], rating: 4.7, imageUrl: 'https://picsum.photos/seed/grooming3/400/300' },
-];
+// 분리된 목업 데이터 파일을 가져옵니다.
+import { mockGroomingServices } from '../data/mockGroomingData.js';
 
 /**
  * GroomingPage 컴포넌트

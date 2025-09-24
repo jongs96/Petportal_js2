@@ -79,7 +79,7 @@ const Header = () => {
     <>
       {/* 헤더의 메인 영역입니다. */}
       {/* className을 동적으로 설정합니다: 기본적으로 styles.header를 적용하고, isScrolled가 true이면 styles.scrolled를 추가로 적용합니다. */}
-      <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+      <header className={`${styles.header} ${ styles.scrolled }`}>
         <div className={styles.container}>
           {/* 로고 컴포넌트. isScrolled 상태를 prop으로 전달하여 스크롤 시 로고 스타일이 변경될 수 있도록 합니다. */}
           <Logo isScrolled={isScrolled} />

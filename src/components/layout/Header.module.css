@@ -17,9 +17,9 @@
 
 .header.scrolled {
   background-color: rgba(255, 255, 255, 0.5); /* 스크롤 시, 반투명한 흰색 배경을 적용합니다. (0.5는 50% 투명도를 의미) */
-  backdrop-filter: blur(1px); /* 헤더 뒤의 콘텐츠를 10px만큼 흐리게 만들어 '프로스티드 글래스' 효과를 줍니다. */
+  /* backdrop-filter: blur(1px); 헤더 뒤의 콘텐츠를 10px만큼 흐리게 만들어 '프로스티드 글래스' 효과를 줍니다. */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 헤더 아래쪽에 부드러운 그림자를 추가하여 입체감을 줍니다. */
-  height: 80px; /* 스크롤 시 헤더의 높이를 80px로 고정합니다. */
+  /* height: 80px; 스크롤 시 헤더의 높이를 80px로 고정합니다. */
 }
 
 .container {
@@ -44,8 +44,8 @@
 }
 
 .header.scrolled .container {
-  padding-top: 0; /* 스크롤 시 상단 패딩을 0으로 초기화합니다. */
-  align-items: center; /* 스크롤 시 자식 요소들을 수직 중앙으로 정렬합니다. */
+  /* padding-top: 0; 스크롤 시 상단 패딩을 0으로 초기화합니다. */
+  /* align-items: center; 스크롤 시 자식 요소들을 수직 중앙으로 정렬합니다. */
 }
 
 

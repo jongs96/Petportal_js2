@@ -15,7 +15,7 @@ import './utils/axiosConfig';
 // 각 Provider는 특정 데이터나 상태(예: 사용자 인증 정보, UI 상태)를 하위 컴포넌트들에게 제공합니다.
 import { AuthProvider } from './context/AuthContext'; // 사용자 인증 관련 상태(로그인 여부, 사용자 정보)를 관리합니다.
 import { ProfileProvider } from './context/ProfileContext'; // 사용자 프로필(내 정보, 펫 정보) 관련 상태를 관리합니다.
-import { UIProvider, useUI } from './contexts/UIContext.jsx'; // UI 관련 상태(로딩 상태, 모달 열림/닫힘 등)를 관리합니다.
+import { UIProvider } from './contexts/UIContext.jsx'; // UI 관련 상태(로딩 상태, 모달 열림/닫힘 등)를 관리합니다.
 import { CartProvider } from './contexts/CartContext'; // 장바구니 관련 상태를 관리합니다.
 import { CommunityProvider } from './contexts/CommunityContext'; // 커뮤니티(게시글, 댓글) 관련 상태를 관리합니다.
 import AdminAuthProvider from './providers/AdminAuthProvider'; // 관리자 인증 상태를 관리합니다.
@@ -25,21 +25,15 @@ import { SearchProvider } from './contexts/SearchContext'; // 검색 관련 상�
 
 // --- Layout Components ---
 // 앱의 전체적인 레이아웃(구조)을 담당하는 컴포넌트들입니다.
-import Header from './components/layout/Header'; // 모든 페이지 상단에 표시될 헤더(머리말) 컴포넌트입니다.
-import Footer from './components/layout/Footer'; // 모든 페이지 하단에 표시될 푸터(꼬리말) 컴포넌트입니다.
+import Layout from './components/layout/Layout'; // Header, Footer, Outlet 등을 포함하는 메인 레이아웃
 
 // --- Common Components ---
 // 여러 페이지에서 공통적으로 사용되는 재사용 가능한 컴포넌트들입니다.
-import LoadingOverlay from './components/common/LoadingOverlay'; // 로딩 중일 때 화면 전체를 덮는 오버레이 컴포넌트입니다.
 import Spinner from './components/ui/Spinner'; // 로딩 상태를 시각적으로 보여주는 스피너(빙글빙글 돌아가는 아이콘)입니다.
-import ScrollToTop from './components/common/ScrollToTop'; // 페이지 이동 시 화면을 맨 위로 스크롤해주는 컴포넌트입니다.
 import ProtectedRoute from './providers/ProtectedRoute'; // 로그인이 필요한 페이지에 접근을 제어하는 보호된 라우트입니다.
 
 // --- Profile Components (Modals) ---
 // 사용자 프로필과 관련된 모달(팝업) 컴포넌트들입니다.
-import UserProfile from './components/profile/UserProfile'; // 사용자 정보(내 정보)를 보여주는 모달입니다.
-import PetProfile from './components/profile/PetProfile'; // 반려동물 정보를 보여주는 모달입니다.
-import AddPetForm from './components/profile/AddPetForm'; // 새로운 반려동물을 추가하는 폼(양식)이 있는 모달입니다.
 
 // --- Service Pages (Direct Import) ---
 // 코드 스플리팅을 적용하지 않고 직접 가져오는 페이지 컴포넌트들입니다.
@@ -91,8 +85,6 @@ const MaintenancePage = lazy(() => import('./pages/MaintenancePage.jsx'));
 function AppContent() {
   // `useLocation` 훅을 사용하여 현재 URL 경로 정보를 가져옵니다.
   const location = useLocation();
-  // `useUI` 커스텀 훅을 사용하여 UI 관련 상태(예: 로딩 상태)를 가져옵니다.
-  const { isLoading } = useUI();
   // `useMaintenance` 커스텀 훅을 사용하여 서비스 점검 상태를 가져옵니다.
   const { isMaintenanceMode } = useMaintenance();
 
@@ -103,54 +95,25 @@ function AppContent() {
   // 점검 안내 페이지를 보여줍니다.
   if (isMaintenanceMode && !isAdminRoute) {
     return (
-      <div className="App main-app-container">
-        {/* Suspense는 lazy loading된 컴포넌트가 로드될 때까지 보여줄 대체 콘텐츠(예: 로딩 스피너)를 설정합니다. */}
-        <Suspense fallback={<div className="suspense-fallback"><Spinner /></div>}>
-          <MaintenancePage />
-        </Suspense>
-      </div>
+      // Layout을 적용하지 않는 별도의 페이지이므로, Suspense로 직접 감싸줍니다.
+      <Suspense fallback={<div className="suspense-fallback"><Spinner /></div>}>
+        <MaintenancePage />
+      </Suspense>
     );
   }
 
-  // 점검 모드가 아니거나 관리자 페이지인 경우, 앱의 정상적인 콘텐츠를 렌더링합니다.
+  // 점검 모드가 아닐 경우, 기본 라우팅 시스템을 렌더링합니다.
   return (
-    <div className="App main-app-container">
-      {/* 사용자에게 알림 메시지를 표시하는 컨테이너입니다. */}
-      <ToastContainer position="bottom-right" autoClose={3000} />
-      {/* 로딩 중일 때 화면 전체를 덮는 오버레이를 표시합니다. */}
-      <LoadingOverlay isLoading={isLoading} />
-      {/* 모든 페이지 상단에 헤더를 렌더링합니다. */}
-      <Header />
-      
-      {/* 앱의 주요 콘텐츠가 표시될 메인 영역입니다. */}
-      <main>
-        {/* 페이지 이동 시 화면을 맨 위로 스크롤합니다. */}
-        <ScrollToTop />
-        {/* lazy loading된 페이지 컴포넌트들을 로드하고, 로딩 중에는 스피너를 보여줍니다. */}
-        <Suspense fallback={<div className="suspense-fallback"><Spinner /></div>}>
-          {/* Routes 컴포넌트는 URL 경로에 따라 어떤 컴포넌트를 보여줄지 결정합니다. */}
-          <Routes>
-            {/* --- 페이지 경로 설정 (Routing) --- */}
-            
+    // lazy loading된 페이지 컴포넌트들을 로드하고, 로딩 중에는 스피너를 보여줍니다.
+    <Suspense fallback={<div className="suspense-fallback"><Spinner /></div>}>
+      {/* Routes 컴포넌트는 URL 경로에 따라 어떤 컴포넌트를 보여줄지 결정합니다. */}
+      <Routes>
+        {/* --- 레이아웃을 사용하는 페이지 그룹 --- */}
+        {/* element에 Layout 컴포넌트를 지정하면, 이 Route의 모든 자식 라우트들은 Layout의 <Outlet /> 위치에 렌더링됩니다. */}
+        <Route element={<Layout />}>
             {/* 메인 페이지 */}
             <Route path="/" element={<HomePage />} />
             <Route path="/main" element={<MainPage />} />
-            
-            {/* 인증 관련 페이지 (로그인, 회원가입) */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            
-            {/* 관리자 전용 페이지 */}
-            <Route path="/admin/login" element={<AdminLoginPage />} />
-            <Route
-              path="/admin/*"
-              element={
-                // AdminProtectedRoute로 감싸서 관리자만 접근할 수 있도록 보호합니다.
-                <AdminProtectedRoute>
-                  <AdminDashboardPage />
-                </AdminProtectedRoute>
-              }
-            />
             
             {/* 주요 서비스 페이지들 */}
             <Route path="/grooming" element={<GroomingPage />} />
@@ -210,21 +173,29 @@ function AppContent() {
                 </ProtectedRoute>
               }
             />
-            
-            {/* 404 Not Found 처리: 정의되지 않은 모든 경로는 메인 페이지로 리다이렉트합니다. */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </main>
-      
-      {/* 모든 페이지 하단에 푸터를 렌더링합니다. */}
-      <Footer />
-      
-      {/* 프로필 관련 모달 컴포넌트들입니다. 이들은 특정 이벤트에 의해 화면에 표시됩니다. */}
-      <UserProfile />
-      <PetProfile />
-      <AddPetForm />
-    </div>
+        </Route>
+
+        {/* --- 레이아웃을 사용하지 않는 독립적인 페이지 그룹 --- */}
+        {/* 인증 관련 페이지 (로그인, 회원가입) */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        
+        {/* 관리자 전용 페이지 */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin/*"
+          element={
+            // AdminProtectedRoute로 감싸서 관리자만 접근할 수 있도록 보호합니다.
+            <AdminProtectedRoute>
+              <AdminDashboardPage />
+            </AdminProtectedRoute>
+          }
+        />
+        
+        {/* 404 Not Found 처리: 일치하는 경로가 없으면 메인 페이지로 리다이렉트합니다. */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }
 
