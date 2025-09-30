@@ -1,18 +1,28 @@
 // src/components/common/BaseServiceMapView.jsx
 
+// React와 훅(useEffect, useRef, useState, useMemo)을 가져옵니다.
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+// 카카오맵 스크립트를 동적으로 로드하는 유틸리티 함수를 가져옵니다.
 import { loadKakaoMap } from '../../utils/loadKakaoMap';
+// 에러 발생 시 보여줄 대체용 단순 지도 컴포넌트를 가져옵니다.
 import { SimpleMapView } from './SimpleMapView';
-import ServiceMapErrorBoundary from './ServiceMapErrorBoundary';
+// 지도 관련 설정을 담고 있는 객체를 가져옵니다. (예: 서비스별 색상, 아이콘 등)
 import { SERVICE_CONFIGS } from '../../config/serviceMapConfig';
+// 서비스별 마커 데이터를 생성하고 필터링하는 유틸리티 함수들을 가져옵니다.
 import { generateServiceMarkers, filterServiceMarkers } from '../../utils/serviceMapUtils';
+// 지도 관련 에러 처리 및 성능 모니터링을 위한 유틸리티들을 가져옵니다.
 import { 
   handleKakaoMapError, 
   handleMarkerError, 
   serviceMapPerformanceMonitor 
 } from '../../utils/serviceMapErrorHandler';
+// 지도 접근성 관련 CSS를 가져옵니다.
 import '../service/maps/ServiceMapAccessibility.css';
 
+// BaseServiceMapView 컴포넌트
+// 모든 서비스(미용, 병원, 카페 등) 지도들의 공통 기반이 되는 컴포넌트입니다.
+// 지도 로딩, 마커 생성, 에러 처리 등 공통 로직을 모두 처리하며,
+// `serviceType` prop을 받아 각 서비스에 맞는 약간의 다른 설정(색상, 아이콘 등)을 적용합니다.
 const BaseServiceMapView = ({ 
   userLocation, 
   rawMarkers = [], 
@@ -22,35 +32,36 @@ const BaseServiceMapView = ({
   className = '',
   customConfig = {}
 }) => {
-  const mapRef = useRef(null);
-  const mapInstance = useRef(null);
-  const markerInstances = useRef([]);
-  const userMarkerRef = useRef(null); // Ref for user location marker
-  const infoWindows = useRef([]);
-  const [kakaoMaps, setKakaoMaps] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // --- React 훅(Hook) 선언부 ---
+  const mapRef = useRef(null); // 지도가 그려질 div 요소를 참조
+  const mapInstance = useRef(null); // 생성된 카카오맵 인스턴스를 저장
+  const markerInstances = useRef([]); // 업체 마커 인스턴스들을 저장
+  const userMarkerRef = useRef(null); // 사용자 위치 마커 인스턴스를 저장
+  const infoWindows = useRef([]); // 정보창 인스턴스들을 저장
+  const [kakaoMaps, setKakaoMaps] = useState(null); // 카카오맵 API 객체
+  const [error, setError] = useState(null); // 에러 상태
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
 
-  // Get service configuration
+  // --- 데이터 처리부 ---
+  // `useMemo` 훅: 의존성 배열의 값이 변경될 때만 함수를 실행하여 결과를 메모라이징(기억)합니다. 불필요한 재계산을 막아 성능을 최적화합니다.
+  // 서비스 설정을 가져옵니다. (기본 설정 + 커스텀 설정)
   const serviceConfig = useMemo(() => ({
     ...SERVICE_CONFIGS[serviceType],
     ...customConfig
   }), [serviceType, customConfig]);
 
-  // Process and filter markers
+  // 원본 마커 데이터가 변경될 때만 마커를 새로 생성하고 필터링합니다.
   const processedMarkers = useMemo(() => {
     const serviceMarkers = generateServiceMarkers(rawMarkers, serviceType);
     return filterServiceMarkers(serviceMarkers, filters, serviceType);
   }, [rawMarkers, serviceType, filters]);
 
-  // 1) Load Kakao Map script
-  useEffect(() => {
-    const loadTimer = serviceMapPerformanceMonitor.startTiming('kakao_map_load', {
-      serviceType,
-      markersCount: rawMarkers.length
-    });
+  // --- useEffect 훅: Side Effect 처리부 ---
 
-    const apiKey = import.meta.env.VITE_KAKAO_JS_KEY;
+  // 1) 카카오맵 스크립트를 로드하는 effect
+  useEffect(() => {
+    const loadTimer = serviceMapPerformanceMonitor.startTiming('kakao_map_load');
+    const apiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY; // .env 파일에서 API 키 가져오기
     
     if (!apiKey) {
       const errorMsg = '카카오맵 API 키가 설정되지 않았습니다.';
@@ -69,171 +80,98 @@ const BaseServiceMapView = ({
         });
       })
       .catch(err => {
-        handleKakaoMapError(err, { 
-          serviceType, 
-          apiKey: apiKey ? 'present' : 'missing',
-          markersCount: rawMarkers.length 
-        });
+        handleKakaoMapError(err, { serviceType });
         setError(err.message);
         setIsLoading(false);
         serviceMapPerformanceMonitor.endTiming(loadTimer);
       });
-  }, [serviceType, rawMarkers.length]);
+  }, [serviceType, rawMarkers.length]); // serviceType이나 마커 개수가 바뀔 때 다시 로드 시도 (일반적으론 한 번만 실행)
 
-  // 2) Create map instance
+  // 2) 지도 인스턴스를 생성하는 effect
   useEffect(() => {
     if (!kakaoMaps || !mapRef.current || isLoading) return;
 
     try {
       const center = userLocation
         ? new kakaoMaps.LatLng(userLocation.lat, userLocation.lng)
-        : new kakaoMaps.LatLng(37.5665, 126.9780);
+        : new kakaoMaps.LatLng(37.5665, 126.9780); // 기본 위치: 서울시청
 
       mapInstance.current = new kakaoMaps.Map(mapRef.current, {
         center,
         level: serviceConfig.defaultZoom || 5,
       });
 
-      // Add zoom control
+      // 줌 컨트롤과 지도 타입 컨트롤을 추가합니다.
       const zoomControl = new kakaoMaps.ZoomControl();
       mapInstance.current.addControl(zoomControl, kakaoMaps.ControlPosition.RIGHT);
-
-      // Add map type control for service maps
       const mapTypeControl = new kakaoMaps.MapTypeControl();
       mapInstance.current.addControl(mapTypeControl, kakaoMaps.ControlPosition.TOPRIGHT);
 
     } catch (err) {
-      handleKakaoMapError(err, { 
-        serviceType, 
-        operation: 'map_creation',
-        userLocation: userLocation ? 'available' : 'unavailable'
-      });
+      handleKakaoMapError(err, { serviceType, operation: 'map_creation' });
       setError(`지도 생성에 실패했습니다: ${err.message}`);
     }
   }, [kakaoMaps, isLoading, userLocation, serviceConfig]);
 
-  // 3) Update user location
-  useEffect(() => {
-    if (!mapInstance.current || !userLocation || !kakaoMaps || isLoading) return;
-    
-    try {
-      const center = new kakaoMaps.LatLng(userLocation.lat, userLocation.lng);
-      mapInstance.current.panTo(center);
-    } catch (err) {
-      handleKakaoMapError(err, { 
-        serviceType, 
-        operation: 'location_update',
-        userLocation 
-      });
-    }
-  }, [userLocation, kakaoMaps, isLoading]);
-
-  // NEW: Render user location marker
+  // 3) 사용자 위치 마커를 렌더링하는 effect
   useEffect(() => {
     if (!mapInstance.current || !userLocation || !kakaoMaps) return;
 
-    // Clear previous user marker
-    if (userMarkerRef.current) {
-      userMarkerRef.current.setMap(null);
-    }
+    if (userMarkerRef.current) userMarkerRef.current.setMap(null); // 기존 마커 제거
 
     try {
       const userPosition = new kakaoMaps.LatLng(userLocation.lat, userLocation.lng);
-      
-      // 빨간색 점 마커 이미지 생성 (SVG 데이터 URI 사용)
       const redDotImageSrc = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FF0000" stroke="#FFFFFF" stroke-width="2"/></svg>');
       const imageSize = new kakaoMaps.Size(24, 24);
-      const imageOption = { offset: new kakaoMaps.Point(12, 12) };
-      const markerImage = new kakaoMaps.MarkerImage(redDotImageSrc, imageSize, imageOption);
+      const markerImage = new kakaoMaps.MarkerImage(redDotImageSrc, imageSize, { offset: new kakaoMaps.Point(12, 12) });
 
-      const marker = new kakaoMaps.Marker({ 
-        position: userPosition,
-        title: '내위치',
-        image: markerImage // 커스텀 아이콘 적용
-      });
-
+      const marker = new kakaoMaps.Marker({ position: userPosition, title: '내위치', image: markerImage });
       marker.setMap(mapInstance.current);
       userMarkerRef.current = marker;
 
     } catch (err) {
-      handleKakaoMapError(err, { 
-        serviceType, 
-        operation: 'user_marker_creation',
-        userLocation 
-      });
+      handleKakaoMapError(err, { serviceType, operation: 'user_marker_creation' });
     }
-  }, [mapInstance.current, userLocation, kakaoMaps, serviceType]);
+  }, [userLocation, kakaoMaps, serviceType]); // userLocation이 바뀔 때마다 실행
 
-  // 4) Render service-specific markers
+  // 4) 서비스 업체 마커들을 렌더링하는 effect
   useEffect(() => {
     if (!mapInstance.current || !processedMarkers || !kakaoMaps || isLoading) return;
 
-    // Clear existing markers and info windows
+    // 기존 마커와 정보창들을 모두 제거합니다.
     markerInstances.current.forEach(marker => marker.setMap(null));
     infoWindows.current.forEach(infoWindow => infoWindow.close());
     markerInstances.current = [];
     infoWindows.current = [];
 
+    // 필터링된 마커들을 순회하며 지도에 표시합니다.
     processedMarkers.forEach((markerData, idx) => {
       try {
-        if (typeof markerData.lat !== 'number' || typeof markerData.lng !== 'number') {
-          console.warn(`마커 ${idx} 좌표 유효하지 않음:`, markerData);
-          return;
-        }
-
         const position = new kakaoMaps.LatLng(markerData.lat, markerData.lng);
-        const marker = new kakaoMaps.Marker({ 
-          position, 
-          title: markerData.name 
-        });
-
-        // Set service-specific marker image
-        if (markerData.displayConfig) {
-          const markerSize = markerData.displayConfig.size || 32;
-          const markerImage = createServiceMarkerImage(
-            kakaoMaps, 
-            markerData.displayConfig, 
-            markerSize
-          );
-          if (markerImage) {
-            marker.setImage(markerImage);
-          }
-        }
-
+        const marker = new kakaoMaps.Marker({ position, title: markerData.name });
         marker.setMap(mapInstance.current);
 
-        // Add click event
+        // 마커 클릭 이벤트를 추가합니다.
         kakaoMaps.event.addListener(marker, 'click', () => {
-          // Close all other info windows
-          infoWindows.current.forEach(infoWindow => infoWindow.close());
+          infoWindows.current.forEach(infoWindow => infoWindow.close()); // 다른 정보창 닫기
 
-          // Create and open info window
           const infoWindow = createServiceInfoWindow(kakaoMaps, markerData, serviceConfig);
           infoWindow.open(mapInstance.current, marker);
           infoWindows.current.push(infoWindow);
 
-          // Call custom click handler
-          if (onMarkerClick) {
-            onMarkerClick(markerData);
-          }
+          if (onMarkerClick) onMarkerClick(markerData); // 부모에게 클릭 이벤트 전달
         });
 
         markerInstances.current.push(marker);
       } catch (err) {
-        handleMarkerError(err, { 
-          serviceType, 
-          markerIndex: idx,
-          markerData: {
-            id: markerData.id,
-            name: markerData.name,
-            hasCoordinates: !!(markerData.lat && markerData.lng)
-          }
-        });
+        handleMarkerError(err, { serviceType, markerIndex: idx, markerData });
       }
     });
-  }, [processedMarkers, kakaoMaps, isLoading, serviceConfig, onMarkerClick]);
+  }, [processedMarkers, kakaoMaps, isLoading, serviceConfig, onMarkerClick]); // 마커 데이터나 설정이 바뀔 때마다 실행
 
-  // Loading state
+  // --- 렌더링(Rendering) 부 ---
+
+  // 로딩 중일 때 UI
   if (isLoading) {
     return (
       <div 
@@ -259,7 +197,7 @@ const BaseServiceMapView = ({
     );
   }
 
-  // Error state - fallback to SimpleMapView
+  // 에러 발생 시 UI (대체 지도)
   if (error) {
     console.warn('카카오맵 로드 실패, 대체 지도 사용:', error);
     return (
@@ -272,7 +210,7 @@ const BaseServiceMapView = ({
     );
   }
 
-  // Normal rendering
+  // 정상 렌더링 UI
   return (
     <div 
       className={`service-map-container ${serviceType}-map ${className}`} 
@@ -281,12 +219,10 @@ const BaseServiceMapView = ({
       aria-label={`${serviceConfig.name} 지도`}
       tabIndex={0}
     >
-      {/* Skip link for keyboard users */}
+      {/* 접근성을 위한 스킵 링크 및 스크린 리더 안내 문구 */}
       <a href="#map-content" className="skip-to-map sr-only">
         지도로 건너뛰기
       </a>
-      
-      {/* Screen reader announcements */}
       <div 
         className="map-announcements" 
         aria-live="polite" 
@@ -296,6 +232,7 @@ const BaseServiceMapView = ({
         {processedMarkers?.length || 0}개의 {serviceConfig.name} 위치가 표시됩니다.
       </div>
       
+      {/* 실제 지도가 그려지는 div */}
       <div
         id="map-content"
         ref={mapRef}
@@ -310,7 +247,7 @@ const BaseServiceMapView = ({
         aria-label="지도 영역"
       />
       
-      {/* Service-specific map info panel */}
+      {/* 지도 상태 정보 패널 */}
       <div 
         className="map-info-panel"
         style={{
@@ -347,19 +284,7 @@ const BaseServiceMapView = ({
   );
 };
 
-// Helper function to create service-specific marker image
-const createServiceMarkerImage = (kakaoMaps, displayConfig, size) => {
-  try {
-    // For now, we'll use the default marker with custom color
-    // In a real implementation, you might want to create custom marker images
-    return null; // Use default marker for now
-  } catch (err) {
-    console.error('마커 이미지 생성 실패:', err);
-    return null;
-  }
-};
-
-// Helper function to create service-specific info window
+// 서비스별 정보창(Infowindow) HTML을 생성하는 헬퍼 함수
 const createServiceInfoWindow = (kakaoMaps, markerData, serviceConfig) => {
   const popupContent = markerData.popupContent || { title: markerData.name, content: [] };
   

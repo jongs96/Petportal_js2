@@ -96,7 +96,7 @@ const GroomingCardGrid = ({ items = [] }) => {
                     <div className={styles.priceRange}>
                       {/* 가격대에 따라 다른 아이콘을 보여줍니다. */}
                       {item.priceRange === 'low' ? '💰' :
-                       item.priceRange === 'medium' ? '💰💰' : '💰💰💰'}
+                      item.priceRange === 'medium' ? '💰💰' : '💰💰💰'}
                     </div>
                   )}
                 </div>

@@ -109,7 +109,8 @@ function AppContent() {
       {/* Routes 컴포넌트는 URL 경로에 따라 어떤 컴포넌트를 보여줄지 결정합니다. */}
       <Routes>
         {/* --- 레이아웃을 사용하는 페이지 그룹 --- */}
-        {/* element에 Layout 컴포넌트를 지정하면, 이 Route의 모든 자식 라우트들은 Layout의 <Outlet /> 위치에 렌더링됩니다. */}
+        {/* element에 Layout 컴포넌트를 지정하면, 이 Route의 모든 자식 라우트들은
+         Layout의 <Outlet /> 위치에 렌더링됩니다. */}
         <Route element={<Layout />}>
             {/* 메인 페이지 */}
             <Route path="/" element={<HomePage />} />
